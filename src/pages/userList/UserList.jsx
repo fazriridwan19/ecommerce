@@ -57,13 +57,18 @@ export default function UserList() {
     ];
     return (
         <div className='userList'>
+            <Link to={'/newUser'}>
+                <button className="userListAddButton">Create</button>
+            </Link>
+
             <DataGrid
             rows={data}
             columns={columns}
-            pageSize={8}
+            pageSize={5}
             checkboxSelection
             disableSelectionOnClick
-        />
+            className='usetTable'
+            />
         </div>
     )
 }
