@@ -28,7 +28,6 @@ const login = asyncWrapper(async (req, res, next) => {
     const refreshToken = jwt.sign({ id: user._id }, process.env.JWT_KEY, { expiresIn: '1d' });
 
     res.status(200).json({
-        userId: user._id,
         accessToken,
         refreshToken
     });
