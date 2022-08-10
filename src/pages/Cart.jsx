@@ -3,10 +3,12 @@ import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { Add, Remove } from "@mui/icons-material";
+import { mobile } from "../responsive";
 
 const Container = styled.div``;
 const Wrapper = styled.div`
   padding: 20px;
+  ${mobile({ padding: "10px" })}
 `;
 const Title = styled.h1`
   font-weight: 300;
@@ -27,7 +29,9 @@ const TopButton = styled.button`
     props.type === "filled" ? "black" : "transparent"};
   color: ${(props) => props.type === "filled" && "white"};
 `;
-const TopTexts = styled.div``;
+const TopTexts = styled.div`
+  ${mobile({ display: "none" })}
+`;
 const TopText = styled.span`
   text-decoration: underline;
   cursor: pointer;
@@ -36,6 +40,7 @@ const TopText = styled.span`
 const Bottom = styled.div`
   display: flex;
   justify-content: space-between;
+  ${mobile({ flexDirection: "column" })}
 `;
 const Info = styled.div`
   flex: 3;
@@ -43,6 +48,7 @@ const Info = styled.div`
 const Product = styled.div`
   display: flex;
   justify-content: space-between;
+  ${mobile({ flexDirection: "column" })}
 `;
 const ProductDetail = styled.div`
   flex: 2;
@@ -57,7 +63,12 @@ const Details = styled.div`
   flex-direction: column;
   justify-content: space-around;
 `;
-const ProductName = styled.span``;
+const ProductName = styled.span`
+  display: flex;
+`;
+const B = styled.b`
+  margin-right: 5px;
+`;
 const ProductId = styled.span``;
 const ProductColor = styled.div`
   width: 20px;
@@ -82,10 +93,12 @@ const ProductAmountContainer = styled.div`
 const ProductAmount = styled.div`
   font-size: 24px;
   margin: 5px;
+  ${mobile({ margin: "5px 15px" })}
 `;
 const ProductPrice = styled.div`
   font-size: 30px;
   font-weight: 200;
+  ${mobile({ marginBottom: "20px" })}
 `;
 const Hr = styled.hr`
   background-color: #eee;
@@ -142,14 +155,17 @@ const Cart = () => {
                 <Image src="https://images.unsplash.com/photo-1615253067487-91c1bfb00643?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80" />
                 <Details>
                   <ProductName>
-                    <b>Product:</b> Logitech Mouse
+                    <B>Product:</B>Logitech Mouse
                   </ProductName>
                   <ProductId>
-                    <b>ID:</b> 982378229038
+                    <B>ID:</B>982378229038
                   </ProductId>
-                  <ProductColor color="black" />
+                  <ProductName>
+                    <B>Color:</B>
+                    <ProductColor color="black" />
+                  </ProductName>
                   <ProductOption>
-                    <b>Option:</b> Wireless
+                    <B>Option:</B>Wireless
                   </ProductOption>
                 </Details>
               </ProductDetail>
@@ -168,14 +184,17 @@ const Cart = () => {
                 <Image src="https://images.unsplash.com/photo-1593442607435-e4e34991b210?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=585&q=80" />
                 <Details>
                   <ProductName>
-                    <b>Product:</b> Airpods
+                    <B>Product:</B>Airpods
                   </ProductName>
                   <ProductId>
-                    <b>ID:</b> 982378229002
+                    <B>ID:</B>982378229002
                   </ProductId>
-                  <ProductColor color="white" />
+                  <ProductName>
+                    <B>Color:</B>
+                    <ProductColor color="white" />
+                  </ProductName>
                   <ProductOption>
-                    <b>Option:</b> none
+                    <b>Option:</b>none
                   </ProductOption>
                 </Details>
               </ProductDetail>
