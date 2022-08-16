@@ -5,6 +5,10 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Newsletter from "../components/Newsletter";
 import { mobile } from "../responsive";
+import { useLocation } from "react-router-dom";
+import { useState } from "react";
+import { useEffect } from "react";
+import { publicRequest } from "../requestMethods";
 
 const Container = styled.div``;
 const Wrapper = styled.div`
@@ -14,15 +18,15 @@ const Wrapper = styled.div`
 `;
 const ImgContainer = styled.div`
   flex: 1;
+  justify-content: center;
 `;
 const Image = styled.img`
   width: 100%;
-  height: 90vh;
-  object-fit: cover;
-  ${mobile({ height: "40vh" })}
+  object-fit: fill;
+  ${mobile({ width: "30%" })}
 `;
 const InfoContainer = styled.div`
-  flex: 1;
+  flex: 2;
   padding: 0px 50px;
   ${mobile({ padding: "10px" })}
 `;
@@ -59,11 +63,11 @@ const FilterColor = styled.div`
   margin: 0px 5px;
   cursor: pointer;
 `;
-const FilterSelection = styled.select`
-  margin-left: 10px;
-  padding: 5px;
-`;
-const FilterSelectionOption = styled.option``;
+// const FilterSelection = styled.select`
+//   margin-left: 10px;
+//   padding: 5px;
+// `;
+// const FilterSelectionOption = styled.option``;
 const AddContainer = styled.div`
   width: 60%;
   display: flex;
@@ -99,46 +103,61 @@ const Button = styled.button`
 `;
 
 const Product = () => {
+  const location = useLocation();
+  const id = location.pathname.split("/")[2];
+  const [product, setProduct] = useState({});
+  const [quantity, setQuantity] = useState(1);
+  const [color, setColor] = useState("none");
+
+  useEffect(() => {
+    const getProduct = async () => {
+      try {
+        const res = await publicRequest.get(`/products/${id}`);
+        setProduct(res.data);
+      } catch (error) {}
+    };
+    getProduct();
+  }, [id]);
+
+  const handleQuantity = (type) => {
+    if (type === "dec" && quantity > 0) {
+      setQuantity(quantity - 1);
+    } else if (type === "inc") {
+      setQuantity(quantity + 1);
+    }
+  };
+
+  const handleClick = () => {
+    //update cart
+  };
+
   return (
     <Container>
       <Announcement />
       <Navbar />
       <Wrapper>
         <ImgContainer>
-          <Image src="https://images.unsplash.com/photo-1615253067487-91c1bfb00643?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80" />
+          <Image src={product.img} />
         </ImgContainer>
         <InfoContainer>
-          <Title>Logitech mouse</Title>
-          <Desc>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste eos
-            voluptatum magni nihil! Incidunt voluptas voluptate id laborum error
-            in quo beatae, esse atque quibusdam. Lorem ipsum dolor sit amet,
-            consectetur adipisicing elit. Assumenda veniam veritatis dicta ad
-            libero rerum!
-          </Desc>
-          <Price>$20</Price>
+          <Title>{product.title}</Title>
+          <Desc>{product.desc}</Desc>
+          <Price>RP. {product.price}</Price>
           <FilterContainer>
             <Filter>
               <FilterTitle>Color</FilterTitle>
-              <FilterColor color="black" />
-              <FilterColor color="darkblue" />
-              <FilterColor color="gray" />
-            </Filter>
-            <Filter>
-              <FilterTitle>Option</FilterTitle>
-              <FilterSelection>
-                <FilterSelectionOption>Wireless</FilterSelectionOption>
-                <FilterSelectionOption>Wired</FilterSelectionOption>
-              </FilterSelection>
+              {product.color?.map((c) => (
+                <FilterColor color={c} key={c} onClick={() => setColor(c)} />
+              ))}
             </Filter>
           </FilterContainer>
           <AddContainer>
             <AmountContainer>
-              <Remove />
-              <Amount>1</Amount>
-              <Add />
+              <Remove onClick={() => handleQuantity("dec")} />
+              <Amount>{quantity}</Amount>
+              <Add onClick={() => handleQuantity("inc")} />
             </AmountContainer>
-            <Button>ADD TO CART</Button>
+            <Button onClick={handleClick}>ADD TO CART</Button>
           </AddContainer>
         </InfoContainer>
       </Wrapper>
